@@ -7,7 +7,7 @@
 
 # Description:
 In this project, I am deploying binaries of sample java application in Azure Kubernetes Service in desired cluster.
-For Continious Integeration of Docker Build and AKS Deployment, I used Azure Devops.  
+For Continious Integeration of Docker Build and AKS Deployment, I used Azure Devops. I developed automation script in `azure-pipelines.yml` .
 
 # Purpose:
 The purpose of the project is to  build the docker file and deploy it in AKS. I created pipeline for the operation. If any commit on respective branch , Pipeline would be triggered. We can also manually trigger the pipeline.
@@ -81,7 +81,7 @@ stages:
 ```
 
 # BUILD stage:
-I created dockerfile. As entire flow needs containerization.
+I created `Dockerfile`. As entire flow needs containerization.
 ```yaml DOCKERFILE
 FROM ubuntu:16.04 as maven
 RUN apt-get update -y
@@ -99,12 +99,12 @@ WORKDIR /app
 COPY --from=maven /app/target/helloworld.war /usr/local/tomcat/webapps/helloworld.war
 ```
 
-In this dockerfile I used two images ubuntu:16.04 with label 'maven' and tomcat image. I installed Java jdk , jre ,maven and set JAVA_HOME environment variable.
+In this dockerfile I used two images `ubuntu:16.04 `with label `maven` and `tomcat` image. I installed Java jdk , jre ,maven and set JAVA_HOME environment variable.
 Working directory as /app. Build java application with Maven tool and copy the war file into webapp folder of tomcat image.
-I used ubuntu image as FROM ubuntu:16.04 as maven . Here maven is image label. So at time of copying war file with new image , Label concept is helpful.
+I used ubuntu image as FROM ubuntu:16.04 as maven . Here `maven is image label`. So at time of copying war file with new image , Label concept is helpful.
 
 In azure-pipelines.yml, I build the Docker image and push it to docker Hub.
-Docker Hub url: https://hub.docker.com/repository/docker/bala2805/k8s_project
+Docker Hub url: `https://hub.docker.com/repository/docker/bala2805/k8s_project`
 
 # DEPLOY Stage:
 In the DEPLOY stage, In Azure pipeline , We need mandatory parameters to pass while triggering the pipeline to run this stage.
@@ -151,7 +151,7 @@ spec:
         ports:
         - containerPort: 8080
 ```
-In the above Yaml, I had created Kind: Deployment and Service.
+In the above Yaml, I had created Kind: Deployment and Service in single `deploy.yml` file.
 With Deployment, I created pods with the image we build in previous stage. Replica refers number of instances scaled up. Template refer to pod template which mean while creating deployment , pods are also created. with selector, we can choose pods for the deployment.
 With Service, We can actually expose deployment to ip address.Here I used cluster IP. Other options like loadbalencer, nodeport available. Here selector selects deployment that need to be exposed.
 
