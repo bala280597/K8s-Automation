@@ -53,8 +53,44 @@ namespace: Name of namespace where we deploy.
 command: commands like create, apply, list etc
 arguments: Path of deployment file
 ```
+Note : As this approach , We can create every Kind in kubernetes in same yaml file or else need to create seperate task for each kind.
+Example: We need to create Deployment and Service Kind means , I would recommend to create single YAML with Service and Deployment kind rather than seperate file for each.
 
+```yaml deploy.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+spec:
+ type: ClusterIP
+ ports:
+  - port: 8080
+    targetPort: 8080
+ selector:
+   app: hello-world-app
 
-
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+    app: hello-world-app
+ template:
+   metadata:
+    labels:
+     app: hello-world-app
+   spec:
+    containers:
+      - name: hello-world
+        image: bala2805/k8s_project
+        ports:
+        - containerPort: 8080
+```
+In the above Yaml, I had created Kind: Deployment and Service.
+With Deployment, I created pods with the image we build in previous stage. Replica denotes number of instances scaled up. Template refer to pod template. with selector, we can choose pods.
+With Service, We can actually expose deployment to ip address.Here I used cluster IP. Other options like loadbalencer, nodeport available. Here selector selects deployment that need to be exposed.
 
