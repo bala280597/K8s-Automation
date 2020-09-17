@@ -49,8 +49,6 @@ stages:
    
   - ${{ if eq(parameters.DEPLOY, true) }}:          
     - job: DEPLOY
-      dependsOn:
-        - Build
       displayName: DEPLOY
       pool:
         vmImage: 'ubuntu-latest'
