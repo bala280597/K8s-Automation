@@ -6,6 +6,12 @@ trigger:
 - none
 
 parameters:
+- name: BUILD
+  type: boolean
+  default: true
+- name: DEPLOY
+  type: boolean
+  default: true
 - name: serviceConnection
   default: '' 
 - name: nameSpace
@@ -26,33 +32,32 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:  
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker'
-        repository: 'bala2805/k8s_project'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: |
-          $(tag)
-
-- stage: Deploy
-  displayName: Build image
-  jobs:  
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps: 
-    - task: Kubernetes@1
-      displayName: kubectl apply using arguments
-      inputs:
-        connectionType: Kubernetes Service Connection
-        kubernetesServiceEndpoint: ${{ parameters.serviceConnection }}
-        namespace: ${{ parameters.nameSpace }}
-        command: ${{ parameters.commands }}
-        arguments: -f  ${{ parameters.arguments }}
+  - ${{ if ne(parameters.BUILD, 'enable') }}:
+    - job: Build
+      displayName: Build
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'Docker'
+          repository: 'bala2805/k8s_project'
+          command: 'buildAndPush'
+          Dockerfile: '**/Dockerfile'
+          tags: |
+            $(tag)
+   
+  - ${{ if ne(parameters.DEPLOY, 'enable') }}:          
+    - job: DEPLOY
+      displayName: DEPLOY
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps: 
+      - task: Kubernetes@1
+        displayName: kubectl apply using arguments
+        inputs:
+          connectionType: Kubernetes Service Connection
+          kubernetesServiceEndpoint: ${{ parameters.serviceConnection }}
+          namespace: ${{ parameters.nameSpace }}
+          command: ${{ parameters.commands }}
+          arguments: -f  ${{ parameters.arguments }}
