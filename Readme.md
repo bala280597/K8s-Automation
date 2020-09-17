@@ -150,3 +150,4 @@ In the above Yaml, I had created Kind: Deployment and Service.
 With Deployment, I created pods with the image we build in previous stage. Replica refers number of instances scaled up. Template refer to pod template which mean while creating deployment , pods are also created. with selector, we can choose pods for the deployment.
 With Service, We can actually expose deployment to ip address.Here I used cluster IP. Other options like loadbalencer, nodeport available. Here selector selects deployment that need to be exposed.
 
+# Thank You
