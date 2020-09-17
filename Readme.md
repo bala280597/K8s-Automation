@@ -15,8 +15,13 @@ The purpose of the project is to  build the docker file and deploy it in AKS. I 
 # Agent:
 I used Azure agent for the pipeline operation for the time being. The best practice is to use Self Hosted Agents that keep us away from tools installation and reduces running time.
 
+```YAML
+pool:
+    vmImage: 'ubuntu-latest'
+```
+
 # Pipeline creation:
-In the Pipeline , I made option for the two stages. (i.e) we have 2 checkboxes called 'BUILD' and 'DEPLOY'. By this parameters we can select the stages. In some case , If we want to delete or list the pods or other kinds in K8s , we don't need to build a docker image. In that scenario we can select DEPLOY checkbox itself. Only Deploy stage will run.
+In the Pipeline , we have 2 boolean parameters called 'BUILD' and 'DEPLOY'. By this parameters we can select the BUILD and  DEPLOY stages. In some case , If we want to delete or list the pods or other kinds in K8s , we don't need to build a docker image. In that scenario we can select DEPLOY checkbox itself. Only Deploy stage will run.
 Some other parameters also mandatory , I would explain in later part of this article while explain about DEPLOY stage.
 ```yaml DOCKERFILE
 trigger:
