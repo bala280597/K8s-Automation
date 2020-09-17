@@ -43,7 +43,15 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-          
+
+- stage: Deploy
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps: 
     - task: Kubernetes@1
       displayName: kubectl apply using arguments
       inputs:
