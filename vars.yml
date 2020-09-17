@@ -1,0 +1,67 @@
+# File: vars.yml
+variables:
+  #--------------------------------------------------------------------------------
+  #Configuration
+  BUILD_AGENT_TYPE: 'Linux' 
+  DOCKER_PUBLISH: 'disable'
+  TEAMS_NOTIFY: 'disable'
+  TEAMS_WEBHOOK_URL: https://outlook.office.com/webhook/2ef91ca2-35d4-43ce-bbc3-32d11b6ed453@63982aff-fb6c-4c22-973b-70e4acfb63e6/IncomingWebhook/510319e785b54708a67ecc6c5c3e14a0/bc231333-8b4f-4c58-b75e-c4655b806744
+  #--------------------------------------------------------------------------------
+  #maven Parameter
+  MAVEN_CLI_OPTS: '--errors --fail-at-end --show-version --batch-mode'
+  MAVEN_GOALS: package
+  MVN_POM_FILE: 'pom.xml'
+  #--------------------------------------------------------------------------------
+  #maven Test Parameter
+  MAVEN_TEST_ARGS: 'clean test'
+  MAVEN_PARAMS: ''
+  TEST_ARTIFACTS : 'target/surefire-reports'
+  JACOCO_COVERAGE: 'enable'
+  #--------------------------------------------------------------------------------
+  #Sonarqube
+  SONAR_PROJECT_KEY: 'HelloWorld_Java'
+  ##SONAR_URL: please set sonar URL in global variables in pipeline library
+  ##SONAR_TOKEN: please set sonar TOKEN in global variables in pipeline library
+  #--------------------------------------------------------------------------------
+  #Artifact Publish parameter 
+  DESTINATION_FEED: 'RD Tech Strategy Design and Test/HelloWorld_Java'
+  PACKAGE_NAME: 'projctname'
+  #CONFIG_FILE_PATH:
+  #--------------------------------------------------------------------------------
+  #DOCKER
+  DOCKER_REGISTRY: 'sdtdevops.azurecr.io'
+  #DOCKER_REGISTRY_USER: please set this variable in pipeline library
+  #DOCKER_REGISTRY_PASSWORD: please set this variable in pipeline library
+  REPOSITORY: 'helloworld_py'
+  #--------------------------------------------------------------------------------
+  TOMCAT_SERVER: 'http://10.160.224.13:8080/'
+  #TOMCAT_USER: please set this variable in pipeline library
+  #TOMCAT_PASSWORD: please set this variable in pipeline library
+  WAR_PATH: 'drop/target/helloworld.war'
+  TOMCAT_CONTEXT: '/helloworld'
+  DEV_ENV: 'helloWorld_dev'
+  #-------------------------------------------------------------------------------- 
+#-----------------------------------------------------------------------------------
+# Test agent details
+  TEST_AGENT: 'SDT-Org-Agent_Linux' 
+  #selenium_maven
+  REPO_CLONE: 'enable' #enable it if the test cases present in diffrent repo
+  SELENIUM_TESTPATH: 'Functional Test/Selenium/Java/Maven-Grid/pom.xml'    
+  SELENIUM_REPO: 'RD Tech Strategy Design and Test/testing' 
+  SELENIUM_BRANCH: master
+  SEL_REPORT_PATH: 'Functional Test/Selenium/Java/Maven-Grid/target/Outputs'
+  #--------------------------------------------------------------------------------
+  #JMeter 
+  REPO_CLONE_JM: 'disable' #enable it if the test cases present in diffrent repo
+  JMETER_REPO: ''
+  JMETER_BRANCH: ''
+  HOST: 'https://myconnect.gsk.com'
+  THREADS: 20
+  RAMPUP: 20
+  DURATION: 1
+  JMETER_TEST_PATH: 'Scripts/JMeter/default.jmx'
+  JMETER_CLI_OPTS: ''
+  #--------------------------------------------------------------------------------
+  #Zaproxy
+  TARGET_URL: 'https://myconnect.gsk.com'
+#----------------------------------------------------------------------------------
