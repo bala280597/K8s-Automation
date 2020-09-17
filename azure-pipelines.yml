@@ -5,6 +5,21 @@
 trigger:
 - master
 
+parameters:
+- name: REPO_CLONE
+  default: ''  
+- name: AZ_SUBSCRIPTION
+  default: '' 
+- name: AZ_RESOURCE_GROUP
+  default: '' 
+- name: AKS_CLUSTER
+  default: '' 
+- name: commands
+  default: '' 
+- name: arguments
+  default: '' 
+
+
 resources:
 - repo: self
 
@@ -28,3 +43,12 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
+          
+    - task: Kubernetes@1
+      displayName: kubectl apply using arguments
+      inputs:
+        azureSubscription: ${{ parameters.AZ_SUBSCRIPTION }}
+        azureResourceGroup:  ${{ parameters.AZ_RESOURCE_GROUP }}
+        kubernetesCluster:  ${{ parameters.AKS_CLUSTER }}
+        command: ${{ parameters.commands }}
+        arguments: ${{ parameters.arguments }}
