@@ -19,6 +19,8 @@ I used Azure agent for the pipeline operation for the time being. The best pract
 pool:
     vmImage: 'ubuntu-latest'
 ```
+# Screenshot
+I attached Screenshots to Screenshot folders at root directory.
 
 # Pipeline creation:
 In the Pipeline , we have 2 boolean parameters called 'BUILD' and 'DEPLOY'. By this parameters we can select the BUILD and  DEPLOY stages. In some case , If we want to delete or list the pods or other kinds in K8s , we don't need to build a docker image. In that scenario we can select DEPLOY checkbox itself. Only Deploy stage will run.
