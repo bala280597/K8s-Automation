@@ -1,12 +1,12 @@
-# AKS Kubernetes Deployment  in Azure Devops
+# Cloud AKS Kubernetes Deployment in Azure Devops
 
-| Language | BuildType| Author |
+| Deployment | Type| Author |
 | -------- | -------- |--------|
-| JAVA |Maven  | BALAMURUGAN BASKARAN|
+| Azure Kubernetes Service |Cloud  | BALAMURUGAN BASKARAN|
 
 
 # Description:
-In this project, I am deploying binaries of sample java application in Azure Kubernetes Service in desired cluster.
+In this project, I am deploying binaries of sample java application in Azure Kubernetes Service in desired cluster using docker image.
 For Continious Integeration of Docker Build and AKS Deployment, I used Azure Devops. I developed automation script in `azure-pipelines.yml` .
 
 # Purpose:
