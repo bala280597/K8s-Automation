@@ -32,7 +32,7 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:  
-  - ${{ if ne(parameters.BUILD, 'enable') }}:
+  - ${{ if ne(parameters.BUILD, true) }}:
     - job: Build
       displayName: Build
       pool:
@@ -47,7 +47,7 @@ stages:
           tags: |
             $(tag)
    
-  - ${{ if ne(parameters.DEPLOY, 'enable') }}:          
+  - ${{ if ne(parameters.DEPLOY, true) }}:          
     - job: DEPLOY
       displayName: DEPLOY
       pool:
