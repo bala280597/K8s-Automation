@@ -18,8 +18,64 @@ I used Azure agent for the pipeline operation for the time being. The best pract
 # Pipeline creation:
 In the Pipeline , I made option for the two stages. (i.e) we have 2 checkboxes called 'BUILD' and 'DEPLOY'. By this parameters we can select the stages. In some case , If we want to delete or list the pods or other kinds in K8s , we don't need to build a docker image. In that scenario we can select DEPLOY checkbox itself. Only Deploy stage will run.
 Some other parameters also mandatory , I would explain in later part of this article while explain about DEPLOY stage.
+```yaml DOCKERFILE
+trigger:
+- master
 
-# BUILD stage.
+parameters:
+- name: BUILD
+  type: boolean
+  default: true
+- name: DEPLOY
+  type: boolean
+  default: true
+- name: serviceConnection
+  default: '' 
+- name: nameSpace
+  default: '' 
+- name: commands
+  default: '' 
+- name: arguments
+  default: '' 
+resources:
+- repo: self
+variables:
+  tag: '$(Build.BuildId)'
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - ${{ if eq(parameters.BUILD, true) }}:
+    - job: Build
+      displayName: Build
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'Docker'
+          repository: 'bala2805/k8s_project'
+          command: 'buildAndPush'
+          Dockerfile: '**/Dockerfile'
+          tags: |
+            $(tag)  
+  - ${{ if eq(parameters.DEPLOY, true) }}:          
+    - job: DEPLOY
+      displayName: DEPLOY
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps: 
+      - task: Kubernetes@1
+        displayName: kubectl apply using arguments
+        inputs:
+          connectionType: Kubernetes Service Connection
+          kubernetesServiceEndpoint: ${{ parameters.serviceConnection }}
+          namespace: ${{ parameters.nameSpace }}
+          command: ${{ parameters.commands }}
+          arguments: -f  ${{ parameters.arguments }}
+```
+
+# BUILD stage:
 I created dockerfile. As entire flow needs containerization.
 ```yaml DOCKERFILE
 FROM ubuntu:16.04 as maven
@@ -45,7 +101,7 @@ I used ubuntu image as FROM ubuntu:16.04 as maven . Here maven is image label. S
 In azure-pipelines.yml, I build the Docker image and push it to docker Hub.
 Docker Hub url: https://hub.docker.com/repository/docker/bala2805/k8s_project
 
-# DEPLOY Stage
+# DEPLOY Stage:
 In the DEPLOY stage, In Azure pipeline , We need mandatory parameters to pass while triggering the pipeline to run this stage.
 ```YAML
 kubernetesServiceEndpoint: Name of Kubernetes service connection that we created with our namespace.
@@ -91,6 +147,6 @@ spec:
         - containerPort: 8080
 ```
 In the above Yaml, I had created Kind: Deployment and Service.
-With Deployment, I created pods with the image we build in previous stage. Replica denotes number of instances scaled up. Template refer to pod template. with selector, we can choose pods.
+With Deployment, I created pods with the image we build in previous stage. Replica refers number of instances scaled up. Template refer to pod template which mean while creating deployment , pods are also created. with selector, we can choose pods for the deployment.
 With Service, We can actually expose deployment to ip address.Here I used cluster IP. Other options like loadbalencer, nodeport available. Here selector selects deployment that need to be exposed.
 
