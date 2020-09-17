@@ -6,11 +6,11 @@ trigger:
 - none
 
 parameters:
-- name: AZ_SUBSCRIPTION
+- name: serviceConnection
   default: '' 
 - name: AZ_RESOURCE_GROUP
   default: '' 
-- name: AKS_CLUSTER
+- name: nameSpace
   default: '' 
 - name: commands
   default: '' 
@@ -53,8 +53,8 @@ stages:
     - task: Kubernetes@1
       displayName: kubectl apply using arguments
       inputs:
-        azureSubscription: ${{ parameters.AZ_SUBSCRIPTION }}
-        azureResourceGroup:  ${{ parameters.AZ_RESOURCE_GROUP }}
-        kubernetesCluster:  ${{ parameters.AKS_CLUSTER }}
+        connectionType: Kubernetes Service Connection
+        kubernetesServiceEndpoint: ${{ parameters.serviceConnection }}
+        namespace: ${{ parameters.nameSpace }}
         command: ${{ parameters.commands }}
-        arguments: ${{ parameters.arguments }}
+        arguments: -f  ${{ parameters.arguments }}
