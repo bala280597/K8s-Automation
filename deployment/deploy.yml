@@ -27,8 +27,7 @@ spec:
    spec:
     containers:
       - name: hello-world
-        image: sdtdevops.azurecr.io/helloworld_java:npe-latest
+        image: bala2805/k8s_project
         ports:
         - containerPort: 8080
-    imagePullSecrets:
-      - name: sdt
+    
