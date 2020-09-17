@@ -8,8 +8,6 @@ trigger:
 parameters:
 - name: serviceConnection
   default: '' 
-- name: AZ_RESOURCE_GROUP
-  default: '' 
 - name: nameSpace
   default: '' 
 - name: commands
