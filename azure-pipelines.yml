@@ -3,11 +3,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+- none
 
 parameters:
-- name: REPO_CLONE
-  default: ''  
 - name: AZ_SUBSCRIPTION
   default: '' 
 - name: AZ_RESOURCE_GROUP
