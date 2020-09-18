@@ -86,7 +86,7 @@ stages:
           kubernetesServiceEndpoint: ${{ parameters.serviceConnection }}
           namespace: ${{ parameters.nameSpace }}
           command: ${{ parameters.commands }}
-          arguments: -f  ${{ parameters.arguments }}
+          arguments: -f deployment.yml
 ```
 
 # BUILD stage:
