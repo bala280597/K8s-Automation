@@ -158,7 +158,7 @@ With Deployment, I created pods with the image we build in previous stage. Repli
 With Service, We can actually expose deployment to ip address.Here I used cluster IP. Other options like loadbalencer, nodeport available. Here selector selects deployment that need to be exposed.
 
 # Parameters for values.yml
-The user can add following details in `values.yml` file for the deploy.yml.
+The user can add following details in `values.yml` file which can be substituted for the deploy.yml.
 ```YAML
 variables:
   REPLICAS: 1
