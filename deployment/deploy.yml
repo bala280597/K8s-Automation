@@ -6,7 +6,7 @@ spec:
  type: ClusterIP
  ports:
   - port: 8080
-    targetPort: 8080
+    targetPort: ${TARGETPORT}
  selector:
    app: hello-world-app
 
@@ -16,7 +16,7 @@ kind: Deployment
 metadata:
   name: hello-world
 spec:
- replicas: 1
+ replicas: ${REPLICAS}
  selector:
    matchLabels:
     app: hello-world-app
@@ -27,7 +27,7 @@ spec:
    spec:
     containers:
       - name: hello-world
-        image: bala2805/k8s_project
+        image: ${IMAGE}
         ports:
-        - containerPort: 8080
+        - containerPort: ${CONTAINERPORT}
     
