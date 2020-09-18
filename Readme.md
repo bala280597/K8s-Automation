@@ -72,6 +72,13 @@ stages:
       pool:
         vmImage: 'ubuntu-latest'
       steps: 
+      steps:
+      - bash: |
+         export REPLICAS=${{variables.REPLICAS}}
+         export TARGETPORT=${{variables.TARGETPORT}}
+         export IMAGE=${{variables.IMAGE}}
+         export CONTAINERPORT=${{variables.CONTAINERPORT}}
+         cat ${{ parameters.arguments }} | envsubst > deployment.yml
       - task: Kubernetes@1
         displayName: kubectl apply using arguments
         inputs:
