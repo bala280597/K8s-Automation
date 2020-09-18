@@ -128,7 +128,7 @@ spec:
  type: ClusterIP
  ports:
   - port: 8080
-    targetPort: 8080
+    targetPort: ${TARGETPORT}
  selector:
    app: hello-world-app
 
@@ -138,7 +138,7 @@ kind: Deployment
 metadata:
   name: hello-world
 spec:
- replicas: 1
+ replicas: ${REPLICAS}
  selector:
    matchLabels:
     app: hello-world-app
@@ -149,12 +149,25 @@ spec:
    spec:
     containers:
       - name: hello-world
-        image: bala2805/k8s_project
+        image: ${IMAGE}
         ports:
-        - containerPort: 8080
+        - containerPort: ${CONTAINERPORT}
 ```
 In the above Yaml, I had created Kind: Deployment and Service in single `deploy.yml` file.
 With Deployment, I created pods with the image we build in previous stage. Replica refers number of instances scaled up. Template refer to pod template which mean while creating deployment , pods are also created. with selector, we can choose pods for the deployment.
 With Service, We can actually expose deployment to ip address.Here I used cluster IP. Other options like loadbalencer, nodeport available. Here selector selects deployment that need to be exposed.
+
+# Parameters for values.yml
+The user can add following details in `values.yml` file for the deploy.yml.
+```YAML
+variables:
+  REPLICAS: 1
+  TARGETPORT: 8080
+  IMAGE: bala2805/k8s_project
+  CONTAINERPORT: 8080
+  tag: '$(Build.BuildId)'
+```
+These variables are substituted in `deploy.yml`. So With these we can use our deployment file as template and passing variables dynamically.
+
 
 # Thank You
