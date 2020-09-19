@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+- none
 
 parameters:
 - name: BUILD
@@ -29,10 +29,10 @@ variables:
 - template: values.yml
 
 stages:
+- ${{ if eq(parameters.BUILD, true) }}:
 - stage: Build
   displayName: Build image
-  jobs:  
-  - ${{ if eq(parameters.BUILD, true) }}:
+  jobs:
     - job: Build
       displayName: Build
       pool:
@@ -47,7 +47,10 @@ stages:
           tags: |
             ${{ variables.tag }}
    
-  - ${{ if eq(parameters.DEPLOY, true) }}:          
+- ${{ if eq(parameters.DEPLOY, true) }}:   
+- stage: Build
+  displayName: Build image
+  jobs:
     - job: DEPLOY
       displayName: DEPLOY
       pool:
