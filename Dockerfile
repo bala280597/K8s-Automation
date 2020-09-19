@@ -6,15 +6,16 @@ RUN  apt-get -y install apache2 \
                                 php-xml\
                                 php-mbstring
 RUN apt-get install -y php-apcu \
-                                                php-intl\
-                                                imagemagick\
-                                                inkscape\
-                                                php-gd\
-                                                php-cli\
-                                                php-curl\
-                                                git\
-                                                wget
-
+                              php-intl\
+                              imagemagick\
+                              inkscape\
+                               php-gd\
+                              php-cli\
+                              php-curl\
+                              git\
+                              wget                  
+RUN apt-get install -y apache2 php libapache2-mod-php php-mcrypt php-mysql php-curl php-xml php-memcached
+RUN service apache2 restart
 WORKDIR /tmp/
 RUN  wget https://releases.wikimedia.org/mediawiki/1.34/mediawiki-1.34.2.tar.gz
 RUN tar -xvzf /tmp/mediawiki-1.34.2.tar.gz
