@@ -16,7 +16,7 @@ RUN apt-get install -y php-apcu \
                                                 wget
 RUN apt-get -y update
 RUN apt-get install -y apache2
-RUN apt-get install ufw
+RUN apt-get install -y ufw
 RUN ufw allow 'Apache Full'
 RUN systemctl status apache2
 WORKDIR /tmp/
