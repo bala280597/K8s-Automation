@@ -14,11 +14,7 @@ RUN apt-get install -y php-apcu \
                                                 php-curl\
                                                 git\
                                                 wget
-RUN apt-get -y update
-RUN apt-get install -y apache2
-RUN apt-get install -y ufw
-RUN ufw allow 'Apache Full'
-RUN systemctl status apache2
+
 WORKDIR /tmp/
 RUN  wget https://releases.wikimedia.org/mediawiki/1.34/mediawiki-1.34.2.tar.gz
 RUN tar -xvzf /tmp/mediawiki-1.34.2.tar.gz
