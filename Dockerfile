@@ -1,14 +1,35 @@
-FROM ubuntu:16.04 as maven
-RUN apt-get update -y
-RUN apt-get install default-jre -y
-RUN apt-get install default-jdk -y
-RUN apt-get update -y
-ENV JAVA_HOME_8_X64=/usr/lib/jvm/java-8-openjdk-amd64 
-RUN apt update -y
-RUN apt install maven -y
-WORKDIR /app
-COPY . .
-RUN mvn package
-FROM tomcat:8.5.6-jre8-alpine
-WORKDIR /app
-COPY --from=maven /app/target/helloworld.war /usr/local/tomcat/webapps/helloworld.war
+FROM ubuntu:16.04
+RUN apt-get -y update && apt-get -y upgrade
+RUN  apt-get -y install apache2 \
+                                php php-mysql\
+                                libapache2-mod-php\
+                                php-xml\
+                                php-mbstring
+RUN apt-get install -y php-apcu \
+                                                php-intl\
+                                                imagemagick\
+                                                inkscape\
+                                                php-gd\
+                                                php-cli\
+                                                php-curl\
+                                                git\
+                                                wget
+RUN apt-get -y update
+RUN apt-get install -y apache2
+RUN ufw allow 'Apache Full'
+RUN systemctl status apache2
+WORKDIR /tmp/
+RUN  wget https://releases.wikimedia.org/mediawiki/1.34/mediawiki-1.34.2.tar.gz
+RUN tar -xvzf /tmp/mediawiki-1.34.2.tar.gz
+RUN mkdir /var/lib/mediawiki
+RUN mv mediawiki-1.34.2.tar.gz /var/lib/mediawiki
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
+ && sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mysql/mysql.conf.d/mysqld.cnf \
+ && mkdir /var/run/mysqld \
+ && chown -R mysql:mysql /var/run/mysqld
+
+VOLUME ["/var/lib/mysql"]
+EXPOSE 3306
+CMD ["mysqld_safe"]
+RUN systemctl enable mysql
